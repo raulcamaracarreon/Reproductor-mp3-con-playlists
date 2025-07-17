@@ -58,12 +58,16 @@ const App = () => {
   }
 
   const handleDeletePlaylist = (id) => {
-    setPlaylists((prev) => prev.filter((pl) => pl.id !== id))
-    if (selectedPlaylistId === id) {
-      setSelectedPlaylistId(playlists.length > 1 ? playlists.find((pl) => pl.id !== id)?.id : null)
-      setCurrentTrackIndex(0)
-      setIsPlaying(false)
-    }
+    setPlaylists((prev) => {
+      const updated = prev.filter((pl) => pl.id !== id)
+      if (selectedPlaylistId === id) {
+        const newSelected = updated[0]?.id ?? null
+        setSelectedPlaylistId(newSelected)
+        setCurrentTrackIndex(0)
+        setIsPlaying(false)
+      }
+      return updated
+    })
   }
 
   const handleSelectPlaylist = (id) => {
@@ -154,6 +158,7 @@ const App = () => {
               onClick={() => setIsLoop((l) => !l)}
               style={{ backgroundColor: isLoop ? '#e94e77' : undefined }}
               title="Loop"
+              aria-label="Loop"
             >
               🔁
             </button>
@@ -161,6 +166,7 @@ const App = () => {
               onClick={() => setIsShuffle((s) => !s)}
               style={{ backgroundColor: isShuffle ? '#e94e77' : undefined }}
               title="Shuffle"
+              aria-label="Shuffle"
             >
               🔀
             </button>

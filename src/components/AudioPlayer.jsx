@@ -38,16 +38,15 @@ const AudioPlayer = ({
 
     audio.addEventListener('timeupdate', updateProgress)
     audio.addEventListener('loadedmetadata', setAudioDuration)
-    audio.addEventListener('ended', () => {
+    const handleEnded = () => {
       onEnded()
-    })
+    }
+    audio.addEventListener('ended', handleEnded)
 
     return () => {
       audio.removeEventListener('timeupdate', updateProgress)
       audio.removeEventListener('loadedmetadata', setAudioDuration)
-      audio.removeEventListener('ended', () => {
-        onEnded()
-      })
+      audio.removeEventListener('ended', handleEnded)
     }
   }, [onEnded])
 
